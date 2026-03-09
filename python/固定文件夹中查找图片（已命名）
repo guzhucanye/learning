@@ -1,0 +1,83 @@
+import os
+import jieba
+import matplotlib.pyplot as plt
+from PIL import Image 
+import numpy as np
+
+plt.rcParams['font.sans-serif'] = ['SimSun']  
+plt.rcParams['axes.unicode_minus'] = False  
+
+image_folder = r"D:\学习资料\作业\考核\image\processed_images"
+image_titles = []
+def is_image_file(full_path):
+    image_signatures ={
+        'JPG': b'\xFF\xD8\xFF',
+        'PNG': b'\x89\x50\x4E\x47\x0D\x0A\x1A\x0A',
+        'GIF': b'\x47\x49\x46\x38',
+        'BMP': b'\x42\x4D'
+    }
+    try:
+        with open(full_path,'rb') as f:
+            file_header = f.read(10)
+        for sig in image_signatures.values():
+            if file_header.startswith(sig):
+                return True
+        return False            
+    except:
+        return False
+
+for item in os.listdir(image_folder):
+    full_path = os.path.join(image_folder, item)
+
+    if os.path.isfile(full_path) and is_image_file(full_path):
+        item_without_ext = os.path.splitext(item)[0]
+        image_titles.append(item_without_ext)
+        
+
+def keyword_based_retrieval(input_text, image_titles, top_k=3):  
+    input_text = input_text.lower()
+    keywords = jieba.lcut(input_text, cut_all=False)
+    keywords = [word for word in keywords if word.strip()]
+
+    title_score = []
+    for title in image_titles:
+        title_lower = title.lower()
+        match_count = sum(1 for word in keywords if word in title_lower)
+        title_score.append((-match_count, title))
+    sorted_titles = sorted(title_score)[:top_k]
+    result = [title for (_, title) in sorted_titles]
+    return result 
+
+def show_images(image_titles, image_folder):
+    plt.figure(figsize=(15, 5))
+    
+    for i, title in enumerate(image_titles, 1):
+        image_path = None
+        for ext in ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.JPG', '.PNG']:
+            potential_path = os.path.join(image_folder, title + ext)
+            if os.path.exists(potential_path):
+                image_path = potential_path
+                break
+        if image_path:
+            try:
+                img = Image.open(image_path)
+                img_array = np.array(img)
+                
+                plt.subplot(1, len(image_titles), i)
+                plt.imshow(img_array)
+                plt.title(title) 
+                plt.axis('off') 
+            except Exception as e:
+                print(f"无法显示图片 {title}: {e}")
+    
+    plt.tight_layout()  
+    plt.show()    
+
+if __name__ == "__main__":
+    user_input = input("请输入查询文字：")
+    top3_images = keyword_based_retrieval(user_input, image_titles)
+    print(f"\n最相关的3张图片标题:")
+    for i, title in enumerate(top3_images, 1):
+        print(f"{i}. {title}")
+    show_images(top3_images, image_folder)
+    
