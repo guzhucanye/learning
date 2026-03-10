@@ -1,0 +1,54 @@
+#include<iostream>
+using namespace std;
+
+template <typename U>
+U GCD (U a, U b){
+	if (a==0 || b==0) return 0;
+	//找到最大公约数GCD
+	while(b){
+		U c = a % b;
+		a = b;
+		b = c; 
+	}
+	return a;
+}
+
+template <typename U>
+U LCM (U a, U b){
+	if (a==0 || b==0) return 0;
+	U lcm = a / GCD(a,b) * b;
+	cout << lcm << endl;
+	return lcm;
+	
+}
+
+int main(){
+	ios::sync_with_stdio(false);
+	cin.tie(0);
+	
+	//1.开头会以一个数字告之该批CASE数量，每一个CASE是两个正整数
+	int T;
+	cin >> T;
+	long long a, b;  //最开始用的int未pass，题目强调了2^32
+	while(T--){
+		cin >> a >> b;
+		LCM(a, b);
+			
+	}
+	cout << "group 1 done" << endl;
+	
+	//2.测试数据以两个0结束
+	while (cin >> a >> b) {
+        if (a == 0 && b == 0) break;
+        LCM(a, b);
+    }
+	cout << "group 2 done" << endl;
+
+	//3.测试数据一直到数据输入结束
+	while(cin >> a >> b){
+		LCM(a, b);		
+	}
+	cout << "group 3 done" << endl;
+	
+	return 0;
+}
