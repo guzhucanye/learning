@@ -1,0 +1,69 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+#define ElemType int
+#define OK 0
+#define ERROR 1
+#define LIST_INIT_SIZE 100
+#define LIST_INCREMENT 10
+
+typedef struct
+{
+	ElemType* elem;
+	int length;
+	int listsize; 
+}SqList;
+
+void InitList_Sq(SqList &L, int n)
+{
+	L.elem = new ElemType[n];
+	L.length = 0;
+	L.listsize = n;
+}
+
+void MergeList_Sq(SqList A, SqList B, SqList C)
+{
+	int i=0, j=0,k=0;
+	C.elem = new ElemType[A.length + B.length];
+	C.length = A.length + B.length;
+	while(i <= A.length && j <= B.length)
+    {
+        if(A.elem[i] <= B.elem[j])
+        	C.elem[k++] = A.elem[i++];
+        else
+            C.elem[k++] = B.elem[j++];
+    }
+
+    // 剩余元素
+
+    while(i <= A.length)
+        C.elem[k++] = A.elem[i++];
+
+    while(j <= B.length)
+        C.elem[k++] = B.elem[j++];
+}
+
+int main(){
+	int T = 2;
+	vector<SqList> lists;
+	while(T--)
+	{
+		int n;
+		cin >> n;
+		SqList L;
+		InitList_Sq(L, n);
+		for(int i = 1;i <= n;i++)
+			cin >> L.elem[i];
+			
+		lists.push_back(L);
+	}
+	SqList M;
+	MergeList_Sq(lists[0], lists[1], M);
+	for(int i = 0;i < M.length; i++)
+	{
+		cout << M.elem[i] << " ";
+		}
+	return OK;
+	}
+	
+	
