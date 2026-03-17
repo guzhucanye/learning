@@ -21,12 +21,12 @@ void InitList_Sq(SqList &L, int n)
 	L.listsize = n;
 }
 
-void MergeList_Sq(SqList A, SqList B, SqList C)
+void MergeList_Sq(SqList A, SqList B, SqList &C)
 {
 	int i=0, j=0,k=0;
 	C.elem = new ElemType[A.length + B.length];
 	C.length = A.length + B.length;
-	while(i <= A.length && j <= B.length)
+	while(i < A.length && j < B.length)
     {
         if(A.elem[i] <= B.elem[j])
         	C.elem[k++] = A.elem[i++];
@@ -36,11 +36,18 @@ void MergeList_Sq(SqList A, SqList B, SqList C)
 
     // 剩余元素
 
-    while(i <= A.length)
+    while(i <= A.length-1)
         C.elem[k++] = A.elem[i++];
 
-    while(j <= B.length)
+    while(j <= B.length-1)
         C.elem[k++] = B.elem[j++];
+}
+
+void Load_Sq(SqList L)
+{
+	for(int i = 0;i < L.length;i++)
+		cout << L.elem[i] << " ";
+	cout << endl;
 }
 
 int main(){
@@ -52,18 +59,34 @@ int main(){
 		cin >> n;
 		SqList L;
 		InitList_Sq(L, n);
-		for(int i = 1;i <= n;i++)
+		for(int i = 0;i < n;i++)
+		{
 			cin >> L.elem[i];
+			L.length++;
+		}
 			
 		lists.push_back(L);
 	}
 	SqList M;
 	MergeList_Sq(lists[0], lists[1], M);
-	for(int i = 0;i < M.length; i++)
-	{
-		cout << M.elem[i] << " ";
-		}
+	cout << "List A:";
+	Load_Sq(lists[0]);
+	cout << "List B:";
+	Load_Sq(lists[1]);
+	cout << "List C:";
+	Load_Sq(M);
+	
 	return OK;
 	}
-	
+
+/*第一行：顺序表A的元素个数
+第二行：顺序表A的各元素（非递减），用空格分开
+第三行：顺序表B的元素个数
+第四行：顺序表B的各元素（非递减），用空格分开
+
+
+输出格式
+第一行：顺序表A的元素列表
+第二行：顺序表B的元素列表
+第三行：合并后顺序表C的元素列表*/
 	
