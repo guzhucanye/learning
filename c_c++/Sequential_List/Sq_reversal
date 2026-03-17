@@ -1,0 +1,66 @@
+#include<stdio.h>
+#include<malloc.h>
+#include<iostream>
+using namespace std;
+#define OK 1
+#define ERROR 0
+#define LIST_INIT_SIZE 100
+#define LISTINCREMENT 10
+#define ElemType int
+
+typedef int Status;
+typedef struct
+{
+    int *elem;
+    int length;
+    int listsize;
+}SqList;
+
+void TurnList_Sq(SqList &L)
+{
+    int i = 0;
+    for(;i<L.length/2;i++)
+    {
+        ElemType temp = L.elem[i];
+        L.elem[i] = L.elem[L.length-1-i];
+        L.elem[L.length-1-i] = temp;
+    }
+}
+
+ Status InitList_Sq(SqList &L)
+{  
+  // 构造一个空的线性表L。
+  L.elem = new ElemType[LIST_INIT_SIZE];
+  if (!L.elem) return OK;        // 存储分配失败
+  L.length = 0;                  // 空表长度为0
+  L.listsize = LIST_INIT_SIZE;   // 初始存储容量
+  return OK;
+}
+
+void LoadList_Sq(SqList &L)
+{
+    for(int i = 0;i<L.length;i++)
+    {
+        cout << L.elem[i] << " ";
+    }
+}
+
+int main()
+{
+    int n;
+    cin >> n;
+    SqList L;
+    L.elem = new ElemType[n];
+    L.length = 0;
+    L.listsize = n;
+    for(int i = 0;i<n;i++){
+        cin >> L.elem[i];
+        L.length++;
+    }
+    cout << "The List is:";
+    LoadList_Sq(L);
+    cout << endl;
+    TurnList_Sq(L);
+    cout << "The turned List is:";
+    LoadList_Sq(L);
+}
