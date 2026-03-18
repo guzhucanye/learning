@@ -71,7 +71,6 @@ int ListDelete_Sq(SqList &L,int i, int &e)
 {
 // 算法2.5,在顺序线性表L中删除第i个位置的元素，并用e返回其值
 // i的合法值为1≤i≤L.length
-// 请补全代码
 if(i > L.length)	return ERROR;
 
 e = L.elem[i-1];
