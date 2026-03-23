@@ -16,7 +16,6 @@ typedef struct
 int InitList_Sq(SqList &L)
 {
 // 算法2.3，构造一个空的线性表L，该线性表预定义大小为LIST_INIT_SIZE
-// 请补全代码
 	L.elem = (ElemType*)malloc(LIST_INIT_SIZE * sizeof(ElemType));
 	L.length = 0;
 	L.listsize = LIST_INIT_SIZE;
