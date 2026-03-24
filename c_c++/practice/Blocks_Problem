@@ -1,0 +1,105 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+
+const int MAXN = 30;
+
+vector<int>pile[MAXN];
+
+void find(int a, int &p, int &h)
+{
+	for(p = 0; p < MAXN; p++)
+	{
+		for(h = 0; h < pile[p].size();h++)
+		{
+			if(pile[p][h] == a)	return;
+		}
+	}
+}
+
+void clear(int p, int h)
+{
+	while(h < pile[p].size()-1)//
+	{
+		int temp = pile[p][h+1];
+		pile[temp].push_back(pile[p][h+1]);
+		h++;
+	}
+	pile[p].erase(pile[p].begin()+h+1, pile[p].end());//应该是+1而不是-1
+}
+
+void pile_over(int pa, int h, int pb)
+{
+	while(h < pile[pa].size())
+	{
+		int temp = pile[pa][h];
+		pile[pb].push_back(pile[pa][h]);
+		h++;
+	}
+	pile[pa].erase(pile[pa].begin()+h, pile[pa].end());
+
+}
+
+int main()
+{
+	int n;
+	cin >> n;
+	for (int i = 0;i < n;i++)
+	{
+		pile[i].push_back(i);	
+	}
+	string cmd,pos;
+	int a, b;
+	int pa, pb, ha, hb;
+	while(cin >> cmd && cmd != "quit")
+	{
+		cin >> a >> pos >> b;
+		find(a, pa, ha);
+		find(b, pb, hb);
+		
+		if(pa == pb)	continue;
+		if(pos == "onto")
+			clear(pb, hb);
+		if(cmd == "move")
+			clear(pa, ha);
+		pile_over(pa, ha, pb);//很妙的一步，若a上全部归位也可以理解为pile
+	}
+	for(int i = 0;i < n; i++)
+	{
+		cout << i << ":" <<" ";
+		for(int t = 0;t < pile[i].size(); t++)
+		{
+			cout << pile[i][t];
+			if(t != pile[i].size())	cout << " ";
+		}
+		cout << endl;
+	}		
+}
+
+
+/*初始时，桌子上有 n  个木块，编号从 0  到 n−1 ，从左到右排列。每个木块所在的堆中只有一个木块。
+现有一台机械臂，可以执行以下命令来重新整理木块：
+表格
+命令	        含义
+move a onto b	把 a、b 上方的木块归位，然后将 a 放到 b 上
+move a over b	把 a 上方的木块归位，然后将 a 放到 b 所在堆的顶部
+pile a onto b	把 b 上方的木块归位，然后将 a 及其上方的木块整体放到 b 上
+pile a over b	将 a 及其上方的木块整体放到 b 所在堆的顶部
+quit	结束操作
+归位：将木块放回其初始位置（编号为该木块编号的位置）。
+非法命令（需忽略）：
+a=b 
+a  和 b  在同一堆中
+
+输入格式
+第一行一个整数 n （0<n<25 ），表示木块数量。
+接下来若干行，每行一条命令，直到出现 quit 为止。
+保证所有命令格式正确。
+
+输出格式
+输出 n  行，第 i  行表示位置 i  的最终状态，格式为：
+i: [木块列表]
+冒号后有一个空格
+木块之间用一个空格分隔
+行尾无空格
+若该位置无木块，则冒号后直接换行*/
