@@ -22,7 +22,7 @@ void clear(int p, int h)
 	while(h < pile[p].size()-1)//
 	{
 		int temp = pile[p][h+1];
-		pile[temp].push_back(pile[p][h+1]);
+		pile[temp].push_back(temp);
 		h++;
 	}
 	pile[p].erase(pile[p].begin()+h+1, pile[p].end());//应该是+1而不是-1
@@ -75,7 +75,7 @@ int main()
 		cout << endl;
 	}		
 }
-
+rerurn 0;
 
 /*初始时，桌子上有 n  个木块，编号从 0  到 n−1 ，从左到右排列。每个木块所在的堆中只有一个木块。
 现有一台机械臂，可以执行以下命令来重新整理木块：
