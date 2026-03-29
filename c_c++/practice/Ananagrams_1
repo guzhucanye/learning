@@ -1,0 +1,59 @@
+#include<iostream>
+#include<algorithm>
+#include<cctype>
+#include<vector>
+#include<set>
+#include<string>
+
+using namespace std;
+
+int main()
+{
+	string s;	//读取单词
+	vector<string> words;	//存储原始形态
+	vector<string> words_out;	//最终输出
+	vector<multiset<char>> vs;	//存储所有单词的字母
+	while(cin >> s)
+	{
+		words.push_back(s);	//原始形态
+		multiset<char> alpha;	//存储当前单词的字母
+		int i = 0;
+		for(;i < s.length();i++)
+		{
+			if(isalpha(s[i]))
+			alpha.insert(tolower(s[i]));	//存储当前小写字母
+		}
+		vs.push_back(alpha);	//字母汇总
+	}
+	
+	for(int i = 0;i < vs.size(); i++)
+	{	int dif = 1;
+		for(int t = 0;t < vs.size();t++)
+		{
+			if(i != t)
+			{
+				if(vs[i] == vs[t])
+				{
+					dif = 0;
+					break;
+				}
+			}
+		}
+		if(dif == 1)
+		{
+			words_out.push_back(words[i]);
+			/*for(auto &x : vs[i])	//调试
+			{
+				cout << x << endl;
+			}
+			cout << endl;*/
+		}
+	}
+	sort(words_out.begin(),words_out.end());
+	for(auto &x : words_out)	//&直接用原来的，不复制、速度快
+	{
+		cout << x << endl;
+	}
+	
+return 0;
+}
