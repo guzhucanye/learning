@@ -1,0 +1,101 @@
+#include<stdio.h>
+#include<malloc.h>
+#define ERROR 0
+#define OK 1
+#define ElemType int
+
+typedef int Status;
+typedef struct LNode
+{
+ int data;
+ struct LNode *next;
+}LNode,*LinkList;
+
+
+int CreateLink_L(LinkList &L,int n){
+// 创建含有n个元素的单链表
+  LinkList p,q;
+  int i;
+  ElemType e;
+  L = new LNode;
+  L->next = NULL;              // 先建立一个带头结点的单链表
+  q = L;
+  for (i=0; i<n; i++) {
+    scanf("%d", &e);
+    p = new LNode;  // 生成新结点
+    // 请补全代码
+    p->data = e;
+    q->next = p;
+    p->next = NULL;
+    q = p;
+
+  }
+  return OK;
+}
+
+int LoadLink_L(LinkList &L){
+// 单链表遍历
+ LinkList p = L->next;
+ if(L->next == NULL)printf("The List is empty!"); // 请填空
+ else
+ {
+	 while(p)    // 请填空
+	 {
+		printf("%d ",p->data);
+		p = p->next;
+	 }
+ }
+ printf("\n");
+ return OK;
+}
+
+int mixLink_L(LinkList A,LinkList B, LinkList &C)
+{
+	C = new LNode;
+    LinkList p = A->next, q = B->next,r = C;
+    C->next = NULL;
+    while(p && q)
+    {
+        if(p->data < q->data)
+        {
+            r->next = p;
+            r = r->next;
+            p = p->next;
+        }
+        else
+        {
+            r->next = q;
+            r = r->next;
+            q = q->next;
+        }
+    }
+    while(p)
+    {
+        r->next = p;
+        r = r->next;
+        p = p->next;
+    }
+    while(q)
+    {
+        r->next = q;
+        r = r->next;
+        q = q->next;
+    }
+}
+
+int main()
+{
+	int n;
+	LinkList A, B, C;
+	scanf("%d",&n);
+	CreateLink_L(A, n);
+	scanf("%d",&n);
+	CreateLink_L(B, n);
+	printf("List A:");
+	LoadLink_L(A);
+	printf("List B:");
+	LoadLink_L(B);
+	mixLink_L(A, B, C);
+	printf("List C:");
+	LoadLink_L(C);
+}
