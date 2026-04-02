@@ -85,10 +85,10 @@ Status StackTraverse(SqStack S)
 
 int main()
 {
-     int a;
-     SqStack S;
-SElemType x, e;
-     if( Status InitStack(S) )    // 判断顺序表是否创建成功，请填空
+    int a;
+	SqStack S;
+	SElemType x, e;
+    if( Status InitStack(S) )    // 判断顺序表是否创建成功，请填空
 {
 	printf("A Stack Has Created.\n");
 }
