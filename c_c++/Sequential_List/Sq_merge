@@ -46,7 +46,7 @@ void MergeList_Sq(SqList A, SqList B, SqList &C)
 void Load_Sq(SqList L)
 {
 	for(int i = 0;i < L.length;i++)
-		cout << L.elem[i] << " ";
+	cout << L.elem[i] << " ";
 	cout << endl;
 }
 
