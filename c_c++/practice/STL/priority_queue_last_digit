@@ -1,0 +1,34 @@
+#include <iostream>
+#include <queue>
+#include <vector>
+using namespace std;
+
+struct CompByLastDigit {
+    bool operator()(int a, int b) {
+        int la = a % 10;
+        int lb = b % 10;
+ 
+        return la > lb;
+    }
+};
+
+int main() {
+  
+    priority_queue<int, vector<int>, CompByLastDigit> pq;
+    // 插入测试数据
+    pq.push(12);   // 个位 2
+    pq.push(3);    // 个位 3
+    pq.push(25);   // 个位 5
+    pq.push(17);   // 个位 7
+    pq.push(9);    // 个位 9
+    pq.push(21);   // 个位 1（最小，优先出队）
+
+
+    cout << "按个位数小的优先出队：" << endl;
+    while (!pq.empty()) {
+        cout << pq.top() << " (个位: " << pq.top() % 10 << ")" << endl;
+        pq.pop();
+    }
+
+    return 0;
+}
