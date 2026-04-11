@@ -1,0 +1,23 @@
+#include<iostream>
+#include<stack>
+using namespace std;
+
+int main()
+{
+    int n;
+    cin >> n;
+    stack<int> a;
+    while(n != 0)
+    {
+        a.push(n % 8);
+        n /= 8;
+    }
+    int i = 0,sum = 0;
+    while(!a.empty())
+    {
+        i = a.top();
+        a.pop();
+        sum = sum*10 + i;
+    }
+    cout << sum << endl;
+}
