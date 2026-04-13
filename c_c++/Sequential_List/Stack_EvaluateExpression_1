@@ -1,0 +1,98 @@
+/*这一题写了很久，主要问题是
+1.运算符号的优先级处理
+2.存储数字时只能计算一位数，最开始的代码扫到数字直接压入，遇见两位数就不行了
+3.最开始的运算符栈顶无元素，取top会崩溃
+4.使用了ungetc函数，很小众，危险
+有时间需要再写一个
+*/
+
+#include<iostream>
+#include<stack>
+using namespace std;
+
+stack<int> nub;
+stack<char> oper;
+char top,ch;
+
+int weight(char ch)
+{
+	if(ch == '-' || ch == '+')	return 1;
+	if(ch == '*' || ch == '/')	return 2;
+	if(ch == '(') return 3;
+	return -1;
+}
+char Precede(char top, char ch)
+{
+	int op1, op2;
+	op1 = weight(top);
+	op2 = weight(ch);
+
+	if(top == '(' && ch == ')')	return '=';
+	if(top == '(')	return '<';			//没有这两行不能完成功能
+	if(ch == ')')	return '>';		
+
+	if(ch == '=') return '>';
+	if(top == '=' && ch == '=')	return '=';		
+	if(op1 >= op2)	return '>';
+	else 	return '<';
+}
+int Operate(int a, char b, int c)
+{
+	if(b == '-')	return a-c;
+	if(b == '+')	return a+c;
+	if(b == '*')	return a*c;
+	if(b == '/')	return a/c;
+	return 0;
+}
+int main()
+{
+	int a, b, num = 0,hasNum = 0;
+	oper.push('=');	
+	top = oper.top();		//初始化否则崩溃
+	while((ch = getchar()) != '=' || oper.top() != '=')
+	{
+		top = oper.top();
+		if(ch >= '0' && ch <= '9') {
+            num = num * 10 + (ch - '0');
+            hasNum = true;
+        }
+       
+		else
+		{	
+			if(hasNum) 
+			{
+                nub.push(num);
+                num = 0;
+                hasNum = false;
+			}
+			switch(Precede(top, ch))
+			{
+				case '>':	//3*3+2 top = *,ch = +
+				//cout << oper.top() << endl <<"ch =" << ch <<endl;
+				oper.pop();
+
+				b = nub.top();
+				nub.pop();
+				a = nub.top();
+				nub.pop();
+				nub.push(Operate(a, top, b));
+				//cout << nub.top() <<endl;
+
+				ungetc(ch, stdin);	//压回未处理的运算符号
+				break;
+
+				case '=':
+				oper.pop();
+				break;
+
+				case '<':
+				oper.push(ch);
+				break;
+
+			}
+		}
+	}
+  if(hasNum) nub.push(num);
+	cout << nub.top() << endl;
+return 0;
+}
