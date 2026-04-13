@@ -1,0 +1,58 @@
+/*这个版本将运算最小算式的功能放在cal函数，减少了代码的复杂度，简化了预处理函数，转而在主函数中分情况讨论*/
+#include <iostream>
+#include <stack>
+#include <string>
+#define double int
+using namespace std;
+string s;
+stack<double> num;
+stack<char> chr;
+int prio(char op){
+	if (op=='*'||op=='/') return 2;
+	if (op=='+'||op=='-') return 1;
+	return 0;
+}
+double cal(){
+	double b=num.top();num.pop();
+	double a=num.top();num.pop();
+	char o=chr.top();chr.pop();
+	switch(o){
+		case '+': return a+b;
+		case '-': return a-b;
+		case '*': return a*b;
+		case '/': return a*1.0/b;
+	}
+}
+int main(){
+	
+	cin>>s;
+	int i=0;
+	while (i<s.size()-1){
+		if (isdigit(s[i])){
+			double n=0;
+			while (isdigit(s[i])){
+				n=n*10+s[i]-'0';
+				i++;
+			}
+			num.push(n);
+		}else if (s[i]==')'){
+			while (chr.top()!='(')
+				num.push(cal());
+			chr.pop();
+			i++;
+		}else if (s[i]=='('){
+			chr.push(s[i]);
+			i++;
+		}
+		else{
+		while (!chr.empty()&&prio(chr.top())>=prio(s[i]))
+			num.push(cal());
+		chr.push(s[i]);
+		i++;
+	}
+	}
+	while (!chr.empty())
+		num.push(cal());
+	cout<<num.top();
+	return 0;
+}
