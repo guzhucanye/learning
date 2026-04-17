@@ -1,0 +1,64 @@
+#include<iostream>
+#include<algorithm>
+#include<vector>
+#define ll long long
+using namespace std;
+int main(){
+    ios::sync_with_stdio(false);
+    int n,m,a;
+    ll cost = 0;
+    vector<ll> costs;
+    while(cin >> n >> m){
+    	//cout << n << m <<"\n";
+    	cost = 0;
+        if(n == 0 && m == 0)  break;
+//        if(n > m){
+//            costs.push_back(-1);
+//            continue;
+//        }
+        
+        vector<int> loo, qi;
+        for(int i = 0;i < n;i++){
+            cin>> a;
+            loo.push_back(a);
+        }
+        for(int i = 0;i < m;i++){
+            cin>> a;
+            qi.push_back(a);
+        }
+        sort(loo.begin(),loo.begin()+n);
+        sort(qi.begin(),qi.begin()+m);
+
+        int i = 0,t = 0,death = 0;
+        for(; i < n && t < m;i++){   
+        	death = 0;
+            while(t < m){
+                if(qi[t] >= loo[i])
+                {
+                	//cout << "wwwt=" << t << "\n";
+                    cost +=  qi[t++];
+                    //cout << "wwwt=" << t << "\n";
+                    death = 1;
+                    break;
+                }
+                t++;
+            }
+
+        }
+    
+        //cout << "i="  << i <<",t=" << t;
+//        if(t >= m && i <= n && death == 0)
+		if(i < n){
+            costs.push_back(-1);
+    	}
+        if(t <= m && i >= n){
+    		costs.push_back(cost);
+		}
+    }
+	for(int i = 0; i<costs.size();i++){
+        if(costs[i] == -1)  cout << "Loowater is doomed!\n";
+        else cout << costs[i] << "\n";
+	}
+        
+
+}
