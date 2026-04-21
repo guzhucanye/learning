@@ -1,0 +1,41 @@
+#include<iostream>
+#include<vector>
+#include<set>
+#define MAXN 30005
+using namespace std;
+int main(){
+ 	ios::sync_with_stdio(false);
+	int n,range,river=0;	//n个数，极差range
+	vector<int> r;
+	multiset<int> cur_r;
+	cin >> n >> range;
+	
+	for(int i=0;i < n;i++){
+		cin >> river;
+		r.push_back(river);
+	}
+	
+	int i, j, max, min, k=0;
+	i = j = 0; max = min = r[0];
+	cur_r.insert(r[0]);
+	while(j < r.size()){
+		if(max - min <= range){
+			if(j-i+1 > k)	k = j-i+1;
+			j++;
+			cur_r.insert(r[j]);
+			if(r[j] > max)	max = r[j];
+			if(r[j] < min)	min = r[j];
+		}
+		else{
+			auto it = cur_r.find(r[i]);
+			cur_r.erase(it);
+			i++;
+			min = *cur_r.begin();
+			max = *cur_r.rbegin();
+		}
+	}
+	
+	cout << k << endl;
+	
+return 0;
+}
