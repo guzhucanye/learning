@@ -1,0 +1,48 @@
+#include<iostream>
+#include<queue>
+#include<vector>
+#include<set>
+typedef  long long ll;
+const int coff[3]={2,3,5};
+using namespace std;
+int main(){
+    ios::sync_with_stdio(false);
+    int n;
+    cin >> n;
+    int a[n];
+    for(int i = 0; i < n;i++){
+        cin >>a[i];
+    }
+    priority_queue<ll,vector<ll>,greater<ll> > Q;
+    set<ll> ug;
+    Q.push(1);
+    ug.insert(1);
+    ll x,x1;
+    int m=0;
+    for(ll i = 1;i <= a[n-1];i++){
+        x = Q.top();
+        Q.pop();
+        if(i == a[m]){
+            cout << x << "\n";  m++;
+        }
+        for(int j = 0;j < 3;j++){
+            x1 = x * coff[j];
+            if(!ug.count(x1)){
+                Q.push(x1);
+                ug.insert(x1);
+            }
+        }
+    }
+
+}
+/*
+“丑数”是指除了质因子2,3，5，不含其它质因子的正整数，例如由小到大前10个“丑数”为
+1, 2, 3, 4, 5, 6, 8, 9, 10, 12, ...
+现要求编写一个程序，输出指定第几位的“丑数”。
+
+输入格式
+第一行为正整数T（T<=10000）, 表示case的数目。
+此后T行，每行一个正整数 n (确定该第n个凑数不超过1000000000).
+
+输出格式
+每一个n，输出第n个“丑数”*/
