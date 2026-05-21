@@ -1,0 +1,52 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+// vector<int>nums;
+// vector<int>ans;
+// vector<bool>b;
+// int n;
+// void f(int i){
+//     if(i == n){
+//         for(auto i:ans){
+//             cout<< i<<' ';
+//         }
+//         cout<<'\n';
+//         return;
+//     }
+//     for(int j = 0;j < n;j++){
+//         if(!b[j]){
+//             ans[i] = nums[j];
+//             b[j] = true;
+//             f(i+1);
+//             b[j] = false;
+//         }
+//     }
+// }
+// int main(){
+//     cin >> n;
+//     nums.resize(n);
+//     ans.resize(n);
+//     b.resize(n,false);
+//     for(int i =0;i<n;i++){
+//         cin>> nums[i];
+//     }
+//     sort(nums.begin(),nums.end());
+//     f(0);
+//     return 0;
+// }
+int main(){
+    int n;
+    cin >> n;
+    vector<int>ans(n);
+    for(int i =0;i<n;i++){
+        cin>> ans[i];
+    }
+    sort(ans.begin(),ans.end());
+    do{
+        for(auto i:ans){
+            cout<< i<<' ';
+        }
+        cout<<'\n';
+    }while(next_permutation(ans.begin(),ans.end()));
+}
